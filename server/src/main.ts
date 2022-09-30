@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
+import {ValidationPipe} from "./pipes/validation.pipe";
 
 const port = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -22,6 +23,8 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     initSwagger(app);
+
+    app.useGlobalPipes(new ValidationPipe());
 
     await app.listen(port, () => {
         if (!isProduction) {
