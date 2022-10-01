@@ -6,8 +6,9 @@ import { UsersModule } from './modules/users/users.module';
 import { RolesModule } from './modules/roles/roles.module';
 
 import { UserModel } from './modules/users/users.model';
-import { RoleModel } from './modules/roles/roles.model';
-import { UsersToRolesModel } from './modules/roles/users-to-roles.model';
+import { ImagesModule } from './modules/images/images.module';
+import { ImagesModel } from './modules/images/images.model';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
     imports: [
@@ -21,11 +22,13 @@ import { UsersToRolesModel } from './modules/roles/users-to-roles.model';
             username: process.env.POSTGRESS_USER,
             password: process.env.POSTGRESS_PASSWORD,
             database: process.env.POSTGRESS_BD,
-            models: [UserModel, RoleModel, UsersToRolesModel],
+            models: [UserModel, ImagesModel],
             autoLoadModels: true,
         }),
         UsersModule,
         RolesModule,
+        ImagesModule,
+        AuthModule,
     ],
 })
 export class AppModule {}
