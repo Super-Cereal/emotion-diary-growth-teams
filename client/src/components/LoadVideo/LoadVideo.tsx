@@ -1,6 +1,6 @@
 import RecordRTC from "recordrtc";
 
-import { postVideoWebm } from "../../store/video/init";
+import { postImages } from "../../store/images/init";
 
 export const LoadVideo = () => {
   const handleClick = () => {
@@ -22,7 +22,7 @@ export const LoadVideo = () => {
           const blob = recorder.getBlob();
           const formData = new FormData();
           formData.append("webm", blob, "video.webm");
-          postVideoWebm(formData);
+          postImages(formData);
         });
       });
   };
