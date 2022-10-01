@@ -9,6 +9,8 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@tensorflow-models/face-landmarks-detection": "^1.0.2",
+    "@tensorflow/tfjs": "^3.20.0",
     "@testing-library/react": "^11.1.0",
     "@types/node": "^16.10.2",
     "@types/react": "^17.0.27",
