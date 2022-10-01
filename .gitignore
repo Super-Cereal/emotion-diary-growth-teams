@@ -3,7 +3,14 @@
 /node_modules
 node_modules
 
+/package-lock.json
+/client/package-lock.json
+/server/package-lock.json
+
+
 .env
+/client/.env
+/server/.env
 
 # Logs
 logs
