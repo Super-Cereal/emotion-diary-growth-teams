@@ -42,7 +42,7 @@ export class AuthService {
         // МОЖНО НАСЫПАТЬ СОЛИ, ЧТОБЫ НИ У КОГО ТАКОГО НЕ ВОЗНИКЛО
         if (isUserExists) {
             throw new HttpException(
-                'Пользователь с таким name существует',
+                `Погоняло ${dto.name} уже занято`,
                 HttpStatus.BAD_REQUEST,
             );
         }
