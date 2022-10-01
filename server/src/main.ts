@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
 import { ValidationPipe } from './pipes/validation.pipe';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const port = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -20,7 +21,18 @@ const initSwagger = (app: INestApplication) => {
 };
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, { cors: true });
+
+    const API_SERVICE_URL = 'http://localhost:3001';
+
+    app.use(
+        createProxyMiddleware({
+            target: API_SERVICE_URL,
+            changeOrigin: true,
+        }),
+    );
+
+    app.enableCors();
 
     initSwagger(app);
 
