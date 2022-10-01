@@ -38,6 +38,8 @@ async function bootstrap() {
 
     app.useGlobalPipes(new ValidationPipe());
 
+    app.setGlobalPrefix('/api/v1');
+
     await app.listen(port, () => {
         if (!isProduction) {
             console.log(`Server listening on http://localhost:${port}/`);

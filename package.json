@@ -1,0 +1,12 @@
+{
+  "name": "tot-hack-growth-teams",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently -n server,client \"(npm start --prefix server)\" \"(npm start --prefix client)\"",
+    "install": "concurrently -n server,client \"(npm install --prefix server)\" \"(npm install --prefix client)\""
+  },
+  "dependencies": {
+    "concurrently": "^7.4.0"
+  }
+}
