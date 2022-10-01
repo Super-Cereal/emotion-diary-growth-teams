@@ -35,7 +35,9 @@ export class AuthService {
     }
 
     async registration(dto: CreateUserDto) {
-        const isUserExists = Boolean(this.userService.getUserByName(dto.name));
+        const isUserExists = Boolean(
+            await this.userService.getUserByName(dto.name),
+        );
 
         // МОЖНО НАСЫПАТЬ СОЛИ, ЧТОБЫ НИ У КОГО ТАКОГО НЕ ВОЗНИКЛО
         if (isUserExists) {
