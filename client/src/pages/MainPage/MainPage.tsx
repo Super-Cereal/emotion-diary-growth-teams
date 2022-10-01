@@ -36,9 +36,17 @@ export const MainPage = () => {
       <section className={b("section")}>
         <img src={brain} height={300} width={200} className={b("brain")} />
         <h2 className={b("header")}>Дневник эмоций</h2>
-        <a href="#form" className={b("button")}>
+        <BaseButton
+          className={b("button")}
+          onClick={() => {
+            window.scrollTo({
+              top: 11110,
+              behavior: "smooth",
+            });
+          }}
+        >
           Принять участие
-        </a>
+        </BaseButton>
       </section>
       <section className={b("sec")}>
         <img src={bg} alt="bg" height={300} width={200} className={b("bg")} />
@@ -52,13 +60,15 @@ export const MainPage = () => {
       </section>
       <section>
         <form id="form" onSubmit={handleSubmit} className={b("form")}>
+          <h3 className={b("h1")}>Как мне вас запомнить?</h3>
           <BaseInput
             name="login"
-            placeholder="login"
+            placeholder="Погоняло"
             value={login}
             onChange={setLogin}
+            className={b("input")}
           />
-          <BaseButton>Отпраить</BaseButton>
+          <BaseButton className={b("btn")}>Перейти к дневнику</BaseButton>
         </form>
       </section>
     </main>

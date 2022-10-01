@@ -66,6 +66,48 @@
     &__sec {
         position: relative;
     }
+
+    &__btn {
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: 500;
+        width: 100%;
+        display: block;
+        height: 50px;
+        border-radius: 25px;
+        border: 0;
+        outline: 0;
+        background: linear-gradient(92.34deg, #64D4ED 5.54%, #EA78FD 101.3%);
+    }
+
+    &__input {
+        font-size: 18px;
+        padding-left: 20px;
+        border-radius: 25px;
+        display: block;
+        border: 0;
+        outline: 0;
+        height: 50px;
+        width: 100%;
+        background: #EAEAEA;
+        box-shadow: inset 0px 0px 15px rgba(0, 0, 0, 0.07);
+    }
+
+    &__h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 20px;
+        color: black;
+        margin: 0;
+        padding-bottom: 20px;
+        // text-align: center;
+        padding-left: 10px;
+    }
+
+    &__form {
+        padding: 20px 20px;
+        border-radius: 10px;
+        background-color: white;
+    }
 }
 
 
