@@ -16,7 +16,7 @@ export const LoadImages = () => {
         recorder.startRecording();
 
         const sleep = (m: number) => new Promise((r) => setTimeout(r, m));
-        await sleep(3000);
+        await sleep(1000);
 
         recorder.stopRecording(function () {
           const blob = recorder.getBlob();
