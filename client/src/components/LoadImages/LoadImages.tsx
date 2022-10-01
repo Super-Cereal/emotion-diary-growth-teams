@@ -2,7 +2,7 @@ import RecordRTC from "recordrtc";
 
 import { postImages } from "../../store/images/init";
 
-export const LoadVideo = () => {
+export const LoadImages = () => {
   const handleClick = () => {
     navigator.mediaDevices
       .getUserMedia({

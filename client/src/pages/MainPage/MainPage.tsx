@@ -1,9 +1,9 @@
-import { LoadVideo } from "../../components/LoadVideo/LoadVideo";
+import { LoadImages } from "../../components/LoadImages/LoadImages";
 
 export const MainPage = () => {
   return (
     <section>
-      <LoadVideo />
+      <LoadImages />
     </section>
   );
 };
