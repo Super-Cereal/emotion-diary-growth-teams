@@ -1,6 +1,9 @@
+import { join } from 'path';
+
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { UsersModule } from './modules/users/users.module';
 
@@ -23,6 +26,10 @@ import { AuthModule } from './modules/auth/auth.module';
             database: process.env.POSTGRESS_BD,
             models: [UserModel, ImagesModel],
             autoLoadModels: true,
+        }),
+        ServeStaticModule.forRoot({
+            serveRoot: '/api/v1/static',
+            rootPath: join(__dirname, '..', 'static')
         }),
         UsersModule,
         ImagesModule,

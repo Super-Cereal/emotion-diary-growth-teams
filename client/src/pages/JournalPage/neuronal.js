@@ -1,5 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
-import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection';
+import * as faceLandmarksDetection from './face-landmark-detection';
+
+import facemo from './web/model/facemo.json';
 
 function setText( text ) {
     console.log('АААААААААААААААААААААААААААААААААААААААААААААААА');
@@ -127,11 +129,18 @@ export const startNeuronal = async () => {
     output.lineWidth = 2;
 
     // Load Face Landmarks Detection
+    debugger;
+    // console.log(faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh);
+    // console.log(faceLandmarksDetection.S);
     model = await faceLandmarksDetection.load(
         faceLandmarksDetection.SupportedPackages.mediapipeFacemesh
     );
     // Load Emotion Detection
-    emotionModel = await tf.loadLayersModel( 'web/model/facemo.json' );
+    // emotionModel = await tf.loadLayersModel('http://localhost:4001/api/v1/static/facemo.json');
+    emotionModel = await tf.loadLayersModel({
+        save: (newFacemo)=> newFacemo,
+        load: () => facemo
+    });
 
     setText( "Loaded!" );
 

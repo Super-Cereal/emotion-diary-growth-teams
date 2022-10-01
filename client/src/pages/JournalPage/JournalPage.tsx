@@ -1,10 +1,20 @@
 import b_ from 'b_';
-import React from 'react';
+import React  from 'react';
+import { useMount } from 'react-use';
+
+import { startNeuronal } from './neuronal';
+
+import './JournalPage.scss';
+
 import { AnlyticsSection } from '../../components/AnlyticsSection/AnlyticsSection';
 
 const b = b_.with('journal-page');
 
 export const JournalPage = () => {
+    useMount(() => {
+        startNeuronal();
+    });
+
     return (
         <div className={b()}>
             <div className={b('video')}>
@@ -22,4 +32,4 @@ export const JournalPage = () => {
             <AnlyticsSection />
         </div>
     );
-};
+}
