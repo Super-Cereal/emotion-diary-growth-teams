@@ -15,6 +15,9 @@ class Api {
   async postLogin(name: string) {
     return (await axios.post(`/api/login`, name)) as string;
   }
+  async postVideo(formData: FormData) {
+    return await axios.post(`/api/video`, formData);
+  }
 }
 
 export default new Api();

@@ -1,4 +1,4 @@
-import { domain } from "./../domain/state";
+import { domain } from "../domain/state";
 import { createEffect } from "effector";
 
 import { uuid } from "./state";
