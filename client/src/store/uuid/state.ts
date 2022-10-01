@@ -1,3 +1,3 @@
 import { createStore } from "effector";
 
-export const uuid = createStore<string | null>(null);
+export const $uuid = createStore<string | null>(null);

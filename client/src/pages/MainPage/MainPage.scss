@@ -1,0 +1,77 @@
+.main-page {
+    &__section {
+        width: 100%;
+        position: relative;
+        padding-top: 130px;
+        font-family: 'Playfair Display', serif;
+    }
+
+    &__brain {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    &__bg {
+        display: block;
+        width: 100%;
+        height: auto;
+        transform: translateY(-35%);
+    }
+
+    &__header {
+        position: absolute;
+        top: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-weight: 400;
+        width: 100%;
+        font-size: 35px;
+        line-height: 33px;
+    }
+
+    &__button {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        border: 0;
+        outline: 0;
+        margin: 0 auto;
+        left: 50%;
+        background: linear-gradient(92.34deg, #64D4ED 5.54%, #EA78FD 101.3%);
+        border-radius: 150px;
+        width: 260px;
+        height: 260px;
+        font-weight: 500;
+        font-size: 45px;
+        line-height: 50px;
+        background: #6cdff9;
+        box-shadow: 0 -200px 100px -120px rgb(148, 146, 236) inset;
+        animation: background 3s infinite alternate;
+        text-align: center;
+        transform: translateY(-35%);
+        text-decoration: none;
+        color: black;
+
+    }
+
+    &__arrow {
+        left: 50%;
+        transform: translateX(-50%);
+        top: -50px;
+        position: absolute;
+    }
+
+    &__sec {
+        position: relative;
+    }
+}
+
+
+@keyframes background {
+    50% {
+        background: rgb(135, 235, 200);
+        box-shadow: 0 -200px 100px -100px #EA78FD inset;
+    }
+}
