@@ -1,12 +1,13 @@
+import { saveUUID } from "./../uuid/init";
 import { domain } from "./../domain/state";
 import api from "../../api";
 
-export const postLogin = domain.createEffect(
-  async (name: string) => {
-    const uuid = await api.postLogin(name);
+export const postLogin = domain.createEffect(async (name: string) => {
+  const {
+    data: { token },
+  } = await api.postLogin(name);
 
-    localStorage.setItem("uuid", uuid);
+  saveUUID(token);
 
-    return uuid;
-  }
-);
+  return token;
+});

@@ -21,7 +21,8 @@ export const LoadImages = () => {
         recorder.stopRecording(function () {
           const blob = recorder.getBlob();
           const formData = new FormData();
-          formData.append("webm", blob, "video.webm");
+          formData.append("image", blob, "video.webm");
+
           postImages(formData);
         });
       });
