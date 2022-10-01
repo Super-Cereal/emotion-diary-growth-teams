@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { AppModule as ApiModule, AppModuleServer } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { INestApplication } from '@nestjs/common';
 import { ValidationPipe } from './pipes/validation.pipe';
@@ -21,26 +21,38 @@ const initSwagger = (app: INestApplication) => {
 };
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule, { cors: true });
+    const api = await NestFactory.create(ApiModule);
+    const app = await NestFactory.create(AppModuleServer);
 
-    const API_SERVICE_URL = 'http://localhost:3001';
+    api.setGlobalPrefix('/api/v1');
+    initSwagger(api);
+    api.useGlobalPipes(new ValidationPipe());
+
+    const CLIENT_SERVICE_URL = 'http://localhost:3001';
+    const API_SERVICE_URL = 'http://localhost:4000';
 
     app.use(
+        '/api/v1/',
         createProxyMiddleware({
             target: API_SERVICE_URL,
             changeOrigin: true,
         }),
     );
 
-    app.enableCors();
+    app.use(
+        createProxyMiddleware({
+            target: CLIENT_SERVICE_URL,
+            changeOrigin: true,
+        }),
+    );
 
-    initSwagger(app);
+    await api.listen(port, () => {
+        if (!isProduction) {
+            console.log(`Server listening on http://localhost:${port}/`);
+        }
+    });
 
-    app.useGlobalPipes(new ValidationPipe());
-
-    app.setGlobalPrefix('/api/v1');
-
-    await app.listen(port, () => {
+    await app.listen(4001, () => {
         if (!isProduction) {
             console.log(`Server listening on http://localhost:${port}/`);
         }
