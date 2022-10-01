@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 import { UsersModule } from './modules/users/users.module';
-import { RolesModule } from './modules/roles/roles.module';
 
 import { UserModel } from './modules/users/users.model';
 import { ImagesModule } from './modules/images/images.module';
@@ -26,7 +25,6 @@ import { AuthModule } from './modules/auth/auth.module';
             autoLoadModels: true,
         }),
         UsersModule,
-        RolesModule,
         ImagesModule,
         AuthModule,
     ],

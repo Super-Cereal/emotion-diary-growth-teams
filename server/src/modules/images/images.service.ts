@@ -11,13 +11,13 @@ export class ImagesService {
         @InjectModel(UserModel) private userRepository: typeof UserModel,
     ) {}
 
-    async uploadImage(image: Express.Multer.File, userId: number) {
+    async uploadImage(image: Express.Multer.File, userName: string) {
         const { path, mimetype } = image;
 
         return await this.imagesRepository.create({
             path,
             mimetype,
-            userId,
+            userName,
         });
     }
 }

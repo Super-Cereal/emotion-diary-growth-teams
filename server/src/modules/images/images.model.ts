@@ -10,14 +10,8 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { UserModel } from '../users/users.model';
 
-interface CreationAttrs {
-    path: string;
-    mimetype: string;
-    userId: number;
-}
-
 @Table({ tableName: 'images' })
-export class ImagesModel extends Model<ImagesModel, CreationAttrs> {
+export class ImagesModel extends Model<ImagesModel> {
     @ApiProperty({ example: 1, description: 'Айди' })
     @Column({
         type: DataType.INTEGER,
@@ -35,8 +29,8 @@ export class ImagesModel extends Model<ImagesModel, CreationAttrs> {
     mimetype: string;
 
     @ForeignKey(() => UserModel)
-    @Column({ type: DataType.INTEGER })
-    userId: number;
+    @Column({ type: DataType.STRING })
+    userName: string;
 
     @BelongsTo(() => UserModel)
     user: UserModel;

@@ -32,6 +32,6 @@ export class ImagesController {
         }),
     )
     async uploadImage(@UploadedFile() image: Express.Multer.File) {
-        await this.imagesService.uploadImage(image, 1);
+        await this.imagesService.uploadImage(image, 'aboba');
     }
 }
