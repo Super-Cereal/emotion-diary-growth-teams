@@ -29,9 +29,9 @@ const getAboutEmotionSectionType = (values: emotionsStore | null) => {
         case 'fear':
             return AboutEmotionSectionType.FEAR;
         case 'happy':
-        case 'neutral':
         case 'surprise':
             return AboutEmotionSectionType.HAPPY;
+        case 'neutral':
         case 'sad':
             return AboutEmotionSectionType.SAD;
         default:
@@ -43,6 +43,10 @@ const b = b_.with('about-emotion-section');
 
 export const AboutEmotionSection = () => {
     const values = useStore($emotions);
+
+    if (!values) {
+        return null;
+    }
 
     const type = getAboutEmotionSectionType(values);
 

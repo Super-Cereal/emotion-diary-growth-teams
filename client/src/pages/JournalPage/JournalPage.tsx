@@ -162,8 +162,9 @@ export const JournalPage = () => {
 
         videoRef.current.srcObject.getTracks()[0].stop();
         setCaptureVideo(false);
-
+        
         postEmotions(values as any);
+        setVideoLoaded(true);
     };
 
     return (
