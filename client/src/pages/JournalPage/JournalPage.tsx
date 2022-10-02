@@ -5,6 +5,8 @@ import { emotionsStore } from '../../api';
 import { postEmotions } from '../../store/emotions';
 
 import './JournalPage.scss';
+import { AboutEmotionSection } from '../../components/AboutEmotionSection/AboutEmotionSection';
+import { AboutEmotionSectionType } from '../../components/AboutEmotionSection/data';
 
 const b = b_.with('journal-page');
 
@@ -242,6 +244,7 @@ export const JournalPage = () => {
             ) : (
                 <></>
             )}
+            <AboutEmotionSection type={AboutEmotionSectionType.ANGRY} />
         </div>
     );
 };
