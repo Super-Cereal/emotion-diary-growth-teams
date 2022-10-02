@@ -1,21 +1,16 @@
 import b_ from 'b_';
 import * as faceapi from 'face-api.js';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { emotionsStore } from '../../api';
 import { postEmotions } from '../../store/emotions';
 
 import bg2 from '../../assets/icons/bg2.png';
-import button from '../../assets/icons/button.png';
-import buttonCr from '../../assets/icons/buttonCr.png';
 import './JournalPage.scss';
 import { AboutEmotionSection } from '../../components/AboutEmotionSection/AboutEmotionSection';
-import { AboutEmotionSectionType } from '../../components/AboutEmotionSection/data';
 
 const b = b_.with('journal-page');
 
 export const JournalPage = () => {
-    const [modelsLoaded, setModelsLoaded] = React.useState(false);
-    const [captureVideo, setCaptureVideo] = React.useState(false);
     const [videoLoaded, setVideoLoaded] = React.useState(false);
     const [values, setValues] = React.useState<
         emotionsStore & { fearful: number }
@@ -48,14 +43,12 @@ export const JournalPage = () => {
         //@ts-ignore
 
         videoRef.current.srcObject.getTracks()[0].stop();
-        setCaptureVideo(false);
         setVideoLoaded(true);
 
         postEmotions(values);
     };
 
     const startVideo = () => {
-        setCaptureVideo(true);
         navigator.mediaDevices
             .getUserMedia({ video: { width: 300 } })
             .then((stream) => {
