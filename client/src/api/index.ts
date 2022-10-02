@@ -17,7 +17,7 @@ axios.defaults.headers.common = {
 
 class Api {
     async get<T>(url: string, params?: any) {
-        let fullUrl: string = url;
+        let fullUrl: string = apiPrefix + url;
         if (params) {
             fullUrl += '?' + new URLSearchParams(params).toString();
         }
@@ -43,7 +43,7 @@ class Api {
     }
 
     async postEmotions(emotions: emotionsStore) {
-        return await axios.post(apiPrefix + `/emotions-state`, { emotions });
+        return await axios.post(apiPrefix + `/emotion-state`, { emotions });
     }
 }
 

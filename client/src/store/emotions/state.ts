@@ -1,4 +1,4 @@
-import { createStore } from 'effector';
+import { domain } from './../domain/state';
 
 export interface emotionsStore {
     angry: number;
@@ -9,4 +9,4 @@ export interface emotionsStore {
     surprise: number;
 }
 
-export const $emotions = createStore<emotionsStore | null>(null);
+export const $emotions = domain.createStore<emotionsStore | null>(null);

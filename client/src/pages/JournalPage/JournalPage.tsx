@@ -4,6 +4,9 @@ import React from 'react';
 import { emotionsStore } from '../../api';
 import { postEmotions } from '../../store/emotions';
 
+import bg2 from '../../assets/icons/bg2.png';
+import button from '../../assets/icons/button.png';
+import buttonCr from '../../assets/icons/buttonCr.png';
 import './JournalPage.scss';
 import { AboutEmotionSection } from '../../components/AboutEmotionSection/AboutEmotionSection';
 import { AboutEmotionSectionType } from '../../components/AboutEmotionSection/data';
@@ -45,6 +48,19 @@ export const JournalPage = () => {
         loadModels();
     }, []);
 
+    const closeWebcam = () => {
+        //@ts-ignore
+        console.log(videoRef);
+        //@ts-ignore
+        videoRef.current.pause();
+        //@ts-ignore
+
+        videoRef.current.srcObject.getTracks()[0].stop();
+        setCaptureVideo(false);
+
+        postEmotions(values);
+    };
+
     const startVideo = () => {
         setCaptureVideo(true);
         navigator.mediaDevices
@@ -60,18 +76,26 @@ export const JournalPage = () => {
             .catch((err) => {
                 console.error('error:', err);
             });
+
+        setInterval(() => {
+            closeWebcam();
+        }, 3000);
     };
 
     const handleVideoOnPlay = () => {
         setInterval(async () => {
             if (canvasRef && canvasRef.current) {
                 //@ts-ignore
-
-                canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
+                const result = await faceapi.createCanvasFromMedia(
                     //@ts-ignore
 
                     videoRef.current,
                 );
+
+                console.log(result);
+
+                //@ts-ignore
+                canvasRef.current.innerHTML = result;
                 const displaySize = {
                     width: videoWidth,
                     height: videoHeight,
@@ -164,51 +188,42 @@ export const JournalPage = () => {
         }, 1000);
     };
 
-    const closeWebcam = () => {
-        //@ts-ignore
-
-        videoRef.current.pause();
-        //@ts-ignore
-
-        videoRef.current.srcObject.getTracks()[0].stop();
-        setCaptureVideo(false);
-
-        postEmotions(values);
-    };
-
     return (
-        <div>
-            <div style={{ textAlign: 'center', padding: '10px' }}>
+        <section
+            style={{ background: `url(${bg2}) center center/cover no-repeat` }}
+            className={b()}
+        >
+            <div>
                 {captureVideo && modelsLoaded ? (
-                    <button
-                        onClick={closeWebcam}
+                    <div
                         style={{
-                            cursor: 'pointer',
-                            backgroundColor: 'green',
-                            color: 'white',
-                            padding: '15px',
-                            fontSize: '25px',
-                            border: 'none',
-                            borderRadius: '10px',
+                            background: `url(${button}) center center/cover no-repeat`,
                         }}
-                    >
-                        Close Webcam
-                    </button>
+                    ></div>
                 ) : (
-                    <button
-                        onClick={startVideo}
-                        style={{
-                            cursor: 'pointer',
-                            backgroundColor: 'green',
-                            color: 'white',
-                            padding: '15px',
-                            fontSize: '25px',
-                            border: 'none',
-                            borderRadius: '10px',
-                        }}
-                    >
-                        Open Webcam
-                    </button>
+                    <>
+                        <h1 className={b('h1')}>Запечатлите свою эмоцию</h1>
+                        <div className={b('wrapper')}>
+                            <div
+                                style={{
+                                    background: `url(${button}) center center/cover no-repeat`,
+                                    height: '500px',
+                                }}
+                            ></div>
+                            <div
+                                style={{
+                                    background: `url(${buttonCr}) center center/cover no-repeat`,
+                                }}
+                                onClick={startVideo}
+                                className={b('btn')}
+                            ></div>
+                        </div>
+                        <h3 className={b('h3')}>
+                            Мы определим ее и покажем по ней статистику, а также
+                            поможем детально узнать себя, свои эмоции и научим
+                            управлять ими
+                        </h3>
+                    </>
                 )}
             </div>
             {captureVideo ? (
@@ -244,7 +259,11 @@ export const JournalPage = () => {
             ) : (
                 <></>
             )}
+<<<<<<< Updated upstream
             <AboutEmotionSection type={AboutEmotionSectionType.ANGRY} />
         </div>
+=======
+        </section>
+>>>>>>> Stashed changes
     );
 };

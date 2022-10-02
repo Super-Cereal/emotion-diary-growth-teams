@@ -197,6 +197,11 @@ body {
   color: white;
 }
 
+iframe {
+  display: none;
+  visibility: hidden;
+}
+
 #root {
   display: flex;
   flex-direction: column;
