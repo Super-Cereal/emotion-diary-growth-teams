@@ -1,33 +1,70 @@
-:root {
-    margin: 25px;
-    --hex-side: 100px;
-    --hex-rotate: 30deg;
-}
-
 .hexagon {
-    width: calc(var(--hex-side) * 1.732);
-    height: var(--hex-side);
-    background: linear-gradient(92.34deg, #64D4ED 5.54%, #EA78FD 101.3%);
-    position: relative;
-    transform: rotate(var(--hex-rotate));
-    margin: 0 auto;
-}
+  padding: 40px 0;
 
-.hexagon:before,
-.hexagon:after {
-    content: '';
+  img {
+    display: block;
+  }
+
+  &__content {
+    width: 200px;
+    height: 200px;
+    position: relative;
+  }
+
+  &__background {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(92.34deg, #64D4ED 5.54%, #EA78FD 101.3%);
     top: 0;
     left: 0;
-}
+    right: 0;
+    bottom: 0;
 
-.hexagon:before {
-    transform: rotate(60deg);
-}
+    img {
+      width: 200px;
+      height: 200px;
+    }
+  }
 
-.hexagon:after {
-    transform: rotate(-60deg);
+  &__dot-wrapper {
+    position: absolute;
+    transform: translate(-50%, -50%);
+  }
+
+  &__text {
+    position: absolute;
+    font-family: "Playfair Display",serif;
+
+    &_neutral {
+      left: 50%;
+      top: -28px;
+      transform: translateX(-50%);
+    }
+
+    &_angry {
+      left: calc(100% + 8px);
+      top: 36px;
+    }
+
+    &_surprise {
+      left: calc(100% + 8px);
+      top: calc(50% + 40px);
+    }
+
+    &_fear {
+      top: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &_happy {
+      right: calc(100% - 16px);
+      top: calc(50% + 40px);
+      transform: translateX(-50%);
+    }
+
+    &_sad {
+      right: calc(100% - 16px);
+      top: 36px;
+      transform: translateX(-50%);
+    }
+  }
 }

@@ -8,7 +8,7 @@ export const getEmotions = domain.createEffect(() => {
     const emotions = {
         angry: 10,
         fear: 11,
-        happy: 4,
+        happy: 11,
         neutral: 3,
         sad: 1,
         surprise: 0,
