@@ -43,7 +43,7 @@ class Api {
     }
 
     async postEmotions(emotions: emotionsStore) {
-        return await axios.post(apiPrefix + `/emotion-state`, { emotions });
+        return await axios.post(apiPrefix + `/emotion-state`, emotions);
     }
 }
 

@@ -1,8 +1,6 @@
 import b_ from 'b_';
 import * as faceapi from 'face-api.js';
 import React, { useEffect } from 'react';
-import { emotionsStore } from '../../api';
-import { postEmotions } from '../../store/emotions';
 
 import bg2 from '../../assets/icons/bg2.png';
 import button from '../../assets/icons/button.png';
@@ -10,20 +8,18 @@ import buttonCr from '../../assets/icons/buttonCr.png';
 import './JournalPage.scss';
 import { AboutEmotionSection } from '../../components/AboutEmotionSection/AboutEmotionSection';
 import { AboutEmotionSectionType } from '../../components/AboutEmotionSection/data';
+import { postEmotions } from '../../store/emotions';
 
 const b = b_.with('journal-page');
 
 export const JournalPage = () => {
     const [modelsLoaded, setModelsLoaded] = React.useState(false);
     const [captureVideo, setCaptureVideo] = React.useState(false);
-    const [values, setValues] = React.useState<
-        emotionsStore & { fearful: number }
-        //@ts-ignore
-    >({});
+    const [values, setValues] = React.useState({});
 
     const videoRef = React.useRef();
-    const videoHeight = 480;
-    const videoWidth = 640;
+    const videoHeight = 300;
+    const videoWidth = 300;
     const canvasRef = React.useRef();
 
     React.useEffect(() => {
@@ -41,17 +37,38 @@ export const JournalPage = () => {
         loadModels();
     }, []);
 
+    const startVideo = () => {
+        setValues({});
+        setCaptureVideo(true);
+        navigator.mediaDevices
+            .getUserMedia({ video: { width: 300 } })
+            .then((stream) => {
+                let video = videoRef.current;
+                //@ts-ignore
+                video.srcObject = stream;
+                //@ts-ignore
+
+                video.play();
+            })
+            .catch((err) => {
+                console.error('error:', err);
+            });
+
+        setTimeout(() => {
+            closeWebcam();
+        }, 10000);
+    };
+
     const handleVideoOnPlay = () => {
         const id = setInterval(async () => {
             if (canvasRef && canvasRef.current) {
-                const result = await faceapi.createCanvasFromMedia(
+                //@ts-ignore
+
+                canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
                     //@ts-ignore
 
                     videoRef.current,
                 );
-
-                //@ts-ignore
-                canvasRef.current.innerHTML = result;
                 const displaySize = {
                     width: videoWidth,
                     height: videoHeight,
@@ -80,6 +97,7 @@ export const JournalPage = () => {
                         'sad',
                         'angry',
                         'fearful',
+                        'disgusted',
                         'surprised',
                     ]
                         .map(function (expression) {
@@ -108,17 +126,6 @@ export const JournalPage = () => {
                                     (v?.[expr.expression] ?? 0) + 1,
                             };
                         });
-                        setValues((v) => ({
-                            ...v,
-
-                            //@ts-ignore
-                            ['surprise']: v.surprised ?? 0,
-                        }));
-                        setValues((v) => ({
-                            ...v,
-                            //@ts-ignore
-                            ['fear']: v.fearful ?? 0,
-                        }));
                     });
                 });
 
@@ -148,42 +155,14 @@ export const JournalPage = () => {
 
     const closeWebcam = () => {
         //@ts-ignore
+
         videoRef.current.pause();
         //@ts-ignore
 
         videoRef.current.srcObject.getTracks()[0].stop();
         setCaptureVideo(false);
-    };
 
-    const startVideo = () => {
-        setValues({
-            angry: 0,
-            fear: 0,
-            happy: 0,
-            neutral: 0,
-            sad: 0,
-            fearful: 0,
-            surprise: 0,
-        });
-
-        setCaptureVideo(true);
-        navigator.mediaDevices
-            .getUserMedia({ video: { width: 300 } })
-            .then((stream) => {
-                let video = videoRef.current;
-                //@ts-ignore
-                video.srcObject = stream;
-                //@ts-ignore
-
-                video.play();
-            })
-            .catch((err) => {
-                console.error('error:', err);
-            });
-
-        setTimeout(() => {
-            closeWebcam();
-        }, 6000);
+        postEmotions(values as any);
     };
 
     return (
