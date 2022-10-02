@@ -1,5 +1,14 @@
 import axios from 'axios';
 
+export interface emotionsStore {
+    angry: number;
+    fear: number;
+    happy: number;
+    neutral: number;
+    sad: number;
+    surprise: number;
+}
+
 const apiPrefix = '/api/v1';
 
 axios.defaults.headers.common = {
@@ -32,8 +41,9 @@ class Api {
             };
         };
     }
-    async postImages({ image }: { image: FormData }) {
-        return await axios.post(apiPrefix + `/images`, image);
+
+    async postEmotions(emotions: emotionsStore) {
+        return await axios.post(apiPrefix + `/emotions-state`, { emotions });
     }
 }
 

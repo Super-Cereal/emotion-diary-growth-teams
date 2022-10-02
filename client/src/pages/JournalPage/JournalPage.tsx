@@ -1,6 +1,8 @@
 import b_ from 'b_';
 import * as faceapi from 'face-api.js';
 import React from 'react';
+import { emotionsStore } from '../../api';
+import { postEmotions } from '../../store/emotions';
 
 import './JournalPage.scss';
 
@@ -9,7 +11,17 @@ const b = b_.with('journal-page');
 export const JournalPage = () => {
     const [modelsLoaded, setModelsLoaded] = React.useState(false);
     const [captureVideo, setCaptureVideo] = React.useState(false);
-    const [values, setValues] = React.useState({});
+    const [values, setValues] = React.useState<
+        emotionsStore & { fearful: number }
+    >({
+        angry: 0,
+        fear: 0,
+        happy: 0,
+        neutral: 0,
+        sad: 0,
+        fearful: 0,
+        surprise: 0,
+    });
 
     const videoRef = React.useRef();
     const videoHeight = 480;
@@ -86,7 +98,6 @@ export const JournalPage = () => {
                         'sad',
                         'angry',
                         'fearful',
-                        'disgusted',
                         'surprised',
                     ]
                         .map(function (expression) {
@@ -115,6 +126,17 @@ export const JournalPage = () => {
                                     (v?.[expr.expression] ?? 0) + 1,
                             };
                         });
+                        setValues((v) => ({
+                            ...v,
+
+                            //@ts-ignore
+                            ['surprise']: v.surprised ?? 0,
+                        }));
+                        setValues((v) => ({
+                            ...v,
+                            //@ts-ignore
+                            ['fear']: v.fearful ?? 0,
+                        }));
                     });
                 });
 
@@ -148,6 +170,8 @@ export const JournalPage = () => {
 
         videoRef.current.srcObject.getTracks()[0].stop();
         setCaptureVideo(false);
+
+        postEmotions(values);
     };
 
     return (
