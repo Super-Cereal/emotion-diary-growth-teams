@@ -6,12 +6,11 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { UsersModule } from './modules/users/users.module';
-
-import { UserModel } from './modules/users/users.model';
-import { ImagesModule } from './modules/images/images.module';
-import { ImagesModel } from './modules/images/images.model';
 import { AuthModule } from './modules/auth/auth.module';
-import { EmotionsModule } from './modules/emotions/emotions.module';
+import { EmotionStateModule } from './modules/emotion-state/emotion-state.module';
+
+import { EmotionStateModel } from './modules/emotion-state/emotion-state.model';
+import { UserModel } from './modules/users/users.model';
 
 @Module({
     imports: [
@@ -25,7 +24,7 @@ import { EmotionsModule } from './modules/emotions/emotions.module';
             username: process.env.POSTGRESS_USER,
             password: process.env.POSTGRESS_PASSWORD,
             database: process.env.POSTGRESS_BD,
-            models: [UserModel, ImagesModel],
+            models: [UserModel, EmotionStateModel],
             autoLoadModels: true,
         }),
         ServeStaticModule.forRoot({
@@ -33,9 +32,8 @@ import { EmotionsModule } from './modules/emotions/emotions.module';
             rootPath: join(__dirname, '..', 'static')
         }),
         UsersModule,
-        ImagesModule,
         AuthModule,
-        EmotionsModule,
+        EmotionStateModule,
     ],
 })
 export class AppModule {}

@@ -14,10 +14,16 @@ export class UsersService {
     }
 
     async getUserByName(name: string) {
-        return await this.userRepository.findByPk(name, { include: 'images' });
+        return await this.userRepository.findByPk(name);
+    }
+
+    async getUserEmotions(name: string) {
+        const user = await this.userRepository.findByPk(name, {  include: 'emotionStates' });
+
+        return await user.$get('emotionStates');
     }
 
     async getAllUsers() {
-        return await this.userRepository.findAll({ include: 'images' });
+        return await this.userRepository.findAll();
     }
 }
