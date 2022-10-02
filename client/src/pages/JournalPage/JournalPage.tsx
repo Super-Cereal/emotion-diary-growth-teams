@@ -50,8 +50,6 @@ export const JournalPage = () => {
 
     const closeWebcam = () => {
         //@ts-ignore
-        console.log(videoRef);
-        //@ts-ignore
         videoRef.current.pause();
         //@ts-ignore
 
@@ -77,7 +75,7 @@ export const JournalPage = () => {
                 console.error('error:', err);
             });
 
-        setInterval(() => {
+        setTimeout(() => {
             closeWebcam();
         }, 3000);
     };
