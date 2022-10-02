@@ -12,7 +12,8 @@ const getAboutEmotionSectionType = (values: emotionsStore | null) => {
     if (!values) {
         return AboutEmotionSectionType.HAPPY;
     }
-    let maxValue = 0, maxEmotion = 'neutral';
+    let maxValue = 0,
+        maxEmotion = 'neutral';
 
     Object.keys(values).forEach((emotion) => {
         // @ts-ignore
@@ -37,13 +38,11 @@ const getAboutEmotionSectionType = (values: emotionsStore | null) => {
         default:
             return AboutEmotionSectionType.HAPPY;
     }
-}
+};
 
 const b = b_.with('about-emotion-section');
 
-export const AboutEmotionSection = () => {
-    const values = useStore($emotions);
-
+export const AboutEmotionSection = ({ values }: { values: any }) => {
     if (!values) {
         return null;
     }
@@ -52,13 +51,17 @@ export const AboutEmotionSection = () => {
 
     const { title, descriptionParagraphs, imageSrc } = dataByType[type];
 
-    return <section className={b()}>
-        <span className={b('title')}>{title}</span>
-        <div className={b('img-wrapper')}>
-            <img className={b('img')} src={imageSrc} alt='emotion-img' />
-        </div>
-        <div className={b('paragraphs')}>
-            {descriptionParagraphs.map((paragraph) => (<span className={b('paragraph')}>{paragraph}</span>))}
-        </div>
-    </section>
-}
+    return (
+        <section className={b()}>
+            <span className={b('title')}>{title}</span>
+            <div className={b('img-wrapper')}>
+                <img className={b('img')} src={imageSrc} alt="emotion-img" />
+            </div>
+            <div className={b('paragraphs')}>
+                {descriptionParagraphs.map((paragraph) => (
+                    <span className={b('paragraph')}>{paragraph}</span>
+                ))}
+            </div>
+        </section>
+    );
+};

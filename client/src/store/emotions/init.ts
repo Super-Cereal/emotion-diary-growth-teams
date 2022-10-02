@@ -1,7 +1,13 @@
-import {  createApi } from "effector";
+import { createApi } from 'effector';
 import { domain } from '../domain/state';
 
-import { $emotions, $recordedEmotions, Emotions, emotionsStore, defaultRecordedEmotions } from './state';
+import {
+    $emotions,
+    $recordedEmotions,
+    Emotions,
+    emotionsStore,
+    defaultRecordedEmotions,
+} from './state';
 import api from '../../api';
 
 export const getEmotions = domain.createEffect(() => {
@@ -10,21 +16,18 @@ export const getEmotions = domain.createEffect(() => {
     return emotions;
 });
 
-export const postEmotions = domain.createEffect(
-    async (params: any) => {
-        debugger;
-        await api.postEmotions(params.emotions);
-        getEmotions();
-    },
-);
+export const postEmotions = domain.createEffect(async (params: any) => {
+    await api.postEmotions(params);
+    getEmotions();
+});
 
 export const recordedEmotionsEvents = createApi($recordedEmotions, {
     handleEmotionRaise: (emotions, emotion: string) => {
-      if (!emotions[emotion]) {
-          emotions[emotion] = 0;
-      }
+        if (!emotions[emotion]) {
+            emotions[emotion] = 0;
+        }
 
-      return ({...emotions, [emotion]: emotions[emotion] + 1 });
+        return { ...emotions, [emotion]: emotions[emotion] + 1 };
     },
     clearEmotions: () => defaultRecordedEmotions,
 });

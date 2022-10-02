@@ -1,1 +1,0 @@
-## React-репозиторий команды Growth teams

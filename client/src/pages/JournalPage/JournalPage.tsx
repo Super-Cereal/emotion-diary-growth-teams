@@ -1,12 +1,16 @@
 import b_ from 'b_';
+import { useStore } from 'effector-react';
 import * as faceapi from 'face-api.js';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import bg2 from '../../assets/icons/bg2.png';
 import button from '../../assets/icons/button.png';
 import buttonCr from '../../assets/icons/buttonCr.png';
 import { AboutEmotionSection } from '../../components/AboutEmotionSection/AboutEmotionSection';
-import { postEmotions } from '../../store/emotions';
+import { AnlyticsSection } from '../../components/AnlyticsSection/AnlyticsSection';
+import { getEmotions, postEmotions } from '../../store/emotions';
+import { $uuid } from '../../store/uuid';
 
 import './JournalPage.scss';
 
@@ -15,13 +19,24 @@ const b = b_.with('journal-page');
 export const JournalPage = () => {
     const [modelsLoaded, setModelsLoaded] = React.useState(false);
     const [captureVideo, setCaptureVideo] = React.useState(false);
-    const [values, setValues] = React.useState({});
     const [videoLoaded, setVideoLoaded] = React.useState(false);
+    const [values, setValues] = React.useState({});
+
+    const isAuth = Boolean(useStore($uuid));
+    const history = useHistory();
 
     const videoRef = React.useRef();
     const videoHeight = 300;
     const videoWidth = 300;
     const canvasRef = React.useRef();
+
+    useEffect(() => {
+        if (!isAuth) {
+            history.push('/');
+        } else {
+            getEmotions();
+        }
+    }, [history, isAuth]);
 
     React.useEffect(() => {
         const loadModels = async () => {
@@ -39,7 +54,6 @@ export const JournalPage = () => {
     }, []);
 
     const startVideo = () => {
-        setValues({});
         setCaptureVideo(true);
         navigator.mediaDevices
             .getUserMedia({ video: { width: 300 } })
@@ -48,26 +62,19 @@ export const JournalPage = () => {
                 //@ts-ignore
                 video.srcObject = stream;
                 //@ts-ignore
-
                 video.play();
             })
             .catch((err) => {
                 console.error('error:', err);
             });
-
-        setTimeout(() => {
-            closeWebcam();
-        }, 10000);
     };
 
     const handleVideoOnPlay = () => {
-        const id = setInterval(async () => {
+        setInterval(async () => {
             if (canvasRef && canvasRef.current) {
                 //@ts-ignore
-
                 canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
                     //@ts-ignore
-
                     videoRef.current,
                 );
                 const displaySize = {
@@ -85,11 +92,6 @@ export const JournalPage = () => {
                     )
                     .withFaceLandmarks()
                     .withFaceExpressions();
-
-                const resizedDetections = faceapi.resizeResults(
-                    detections,
-                    displaySize,
-                );
 
                 detections.forEach(function (e) {
                     const sorted = [
@@ -127,8 +129,24 @@ export const JournalPage = () => {
                                     (v?.[expr.expression] ?? 0) + 1,
                             };
                         });
+                        setValues((v) => ({
+                            ...v,
+
+                            //@ts-ignore
+                            ['surprise']: v.surprised ?? 0,
+                        }));
+                        setValues((v) => ({
+                            ...v,
+                            //@ts-ignore
+                            ['fear']: v.fearful ?? 0,
+                        }));
                     });
                 });
+
+                const resizedDetections = faceapi.resizeResults(
+                    detections,
+                    displaySize,
+                );
 
                 canvasRef &&
                     canvasRef.current &&
@@ -144,26 +162,29 @@ export const JournalPage = () => {
                     );
                 canvasRef &&
                     canvasRef.current &&
+                    faceapi.draw.drawFaceLandmarks(
+                        canvasRef.current,
+                        resizedDetections,
+                    );
+                canvasRef &&
+                    canvasRef.current &&
                     faceapi.draw.drawFaceExpressions(
                         canvasRef.current,
                         resizedDetections,
                     );
-            } else {
-                clearInterval(id);
             }
         }, 1000);
     };
 
     const closeWebcam = () => {
         //@ts-ignore
-
         videoRef.current.pause();
         //@ts-ignore
-
         videoRef.current.srcObject.getTracks()[0].stop();
         setCaptureVideo(false);
-        
+
         postEmotions(values as any);
+
         setVideoLoaded(true);
     };
 
@@ -174,32 +195,37 @@ export const JournalPage = () => {
         >
             <div>
                 <h1 className={b('h1')}>Запечатлите свою эмоцию</h1>
-                {captureVideo && modelsLoaded ? (
-                    <div>
-                        <div
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                padding: '10px',
-                            }}
-                        >
-                            <video
-                                //@ts-ignore
-
-                                ref={videoRef}
-                                height={videoHeight}
-                                width={videoWidth}
-                                onPlay={handleVideoOnPlay}
-                                style={{ borderRadius: '10px' }}
-                            />
-                            <canvas
-                                //@ts-ignore
-
-                                ref={canvasRef}
-                                style={{ position: 'absolute' }}
-                            />
+                {captureVideo ? (
+                    modelsLoaded ? (
+                        <div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    padding: '10px',
+                                }}
+                            >
+                                <video
+                                    //@ts-ignore
+                                    ref={videoRef}
+                                    height={videoHeight}
+                                    width={videoWidth}
+                                    onPlay={handleVideoOnPlay}
+                                    style={{ borderRadius: '10px' }}
+                                />
+                                <canvas
+                                    //@ts-ignore
+                                    ref={canvasRef}
+                                    style={{ position: 'absolute' }}
+                                />
+                            </div>
+                            <button onClick={closeWebcam} className={b('btnz')}>
+                                Завершить снимать
+                            </button>
                         </div>
-                    </div>
+                    ) : (
+                        <div>loading...</div>
+                    )
                 ) : (
                     <div className={b('wrapper')}>
                         <div
@@ -217,12 +243,14 @@ export const JournalPage = () => {
                         ></div>
                     </div>
                 )}
+
                 <h3 className={b('h3')}>
                     Мы определим ее и покажем по ней статистику, а также поможем
                     детально узнать себя, свои эмоции и научим управлять ими
                 </h3>
             </div>
-            {videoLoaded && <AboutEmotionSection />}
+            <AnlyticsSection />
+            {videoLoaded && <AboutEmotionSection values={values} />}
         </section>
     );
 };

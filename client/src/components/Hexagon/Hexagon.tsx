@@ -85,12 +85,12 @@ export const Hexagon = () => {
     const emotions = useStore($emotions);
 
     // обьединили disgust and fear
-    const angry = emotions?.angry ?? 0;
-    const fear = emotions?.fear ?? 0;
-    const sad = emotions?.sad ?? 0;
-    const happy = emotions?.happy ?? 0;
-    const neutral = emotions?.neutral ?? 0;
-    const surprise = emotions?.surprise ?? 0;
+    const angry = emotions?.angry || 1;
+    const fear = emotions?.fear || 1;
+    const sad = emotions?.sad || 1;
+    const happy = emotions?.happy || 1;
+    const neutral = emotions?.neutral || 1;
+    const surprise = emotions?.surprise || 1;
 
     const dot1 = emotionalFuncs['angryhappy'](angry, happy);
     const dot2 = emotionalFuncs['sadsurprise'](sad, surprise);
