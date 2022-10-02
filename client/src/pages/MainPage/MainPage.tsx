@@ -22,7 +22,7 @@ function scrollToElement(el?: any) {
         return;
     }
     const { top } = el.getBoundingClientRect();
-    window.scrollTo({ top: window.scrollY + top, behavior: 'smooth' });
+    window.scrollTo({ top: window.scrollY + top - 60, behavior: 'smooth' });
 }
 
 export const MainPage = () => {
@@ -54,7 +54,7 @@ export const MainPage = () => {
                 <h2 className={b('header')}>Дневник эмоций</h2>
                 <BaseButton
                     className={b('button')}
-                    onClick={() => scrollToElement(ref)}
+                    onClick={() => scrollToElement(ref?.current)}
                 >
                     Принять участие
                 </BaseButton>
@@ -75,7 +75,8 @@ export const MainPage = () => {
                     className={b('arrow')}
                 />
             </section>
-            <section ref={ref}>
+            <section>
+                <div ref={ref}>
                 <form
                     id="form"
                     onSubmit={handleSubmit}
@@ -107,6 +108,7 @@ export const MainPage = () => {
                     width={200}
                     className={b('bg')}
                 />
+                </div>
             </section>
         </main>
     );

@@ -1,5 +1,6 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import React from 'react';
 
 import { LoginPage } from "./LoginPage/LoginPage";
 import { RegisterPage } from "./RegisterPage/RegisterPage";
@@ -13,7 +14,7 @@ export const Pages = () => {
       <Switch>
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
-        <Route path="/journal" component={JournalPage} />
+        <Route path="/journal" component={() => <JournalPage />} />
         <Route path="/*" component={MainPage} />
       </Switch>
       <ToastContainer hideProgressBar={true} />
