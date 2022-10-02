@@ -22,6 +22,7 @@
     "cx": "^22.9.1",
     "effector": "^22.3.0",
     "effector-react": "^22.1.3",
+    "face-api.js": "^0.22.2",
     "node-sass": "^6.0.1",
     "query-string": "^7.0.1",
     "react": "^17.0.2",
