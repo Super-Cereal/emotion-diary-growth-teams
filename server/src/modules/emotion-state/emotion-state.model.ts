@@ -1,4 +1,11 @@
-import { Model, Table, Column, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import {
+    Model,
+    Table,
+    Column,
+    DataType,
+    BelongsTo,
+    ForeignKey,
+} from 'sequelize-typescript';
 
 import { UserModel } from '../users/users.model';
 import { SaveEmotionStateDto } from './dto/save-emotion-state.dto';

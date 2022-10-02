@@ -29,7 +29,7 @@ import { UserModel } from './modules/users/users.model';
         }),
         ServeStaticModule.forRoot({
             serveRoot: '/api/v1/static',
-            rootPath: join(__dirname, '..', 'static')
+            rootPath: join(__dirname, '..', 'static'),
         }),
         UsersModule,
         AuthModule,

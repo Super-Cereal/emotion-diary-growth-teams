@@ -7,8 +7,12 @@ import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-  controllers: [EmotionStateController],
-  providers: [EmotionStateService],
-  imports: [SequelizeModule.forFeature([EmotionStateModel]), AuthModule, UsersModule]
+    controllers: [EmotionStateController],
+    providers: [EmotionStateService],
+    imports: [
+        SequelizeModule.forFeature([EmotionStateModel]),
+        AuthModule,
+        UsersModule,
+    ],
 })
 export class EmotionStateModule {}

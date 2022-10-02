@@ -18,7 +18,9 @@ export class UsersService {
     }
 
     async getUserEmotions(name: string) {
-        const user = await this.userRepository.findByPk(name, {  include: 'emotionStates' });
+        const user = await this.userRepository.findByPk(name, {
+            include: 'emotionStates',
+        });
 
         return await user.$get('emotionStates');
     }
