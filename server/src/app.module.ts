@@ -11,6 +11,7 @@ import { UserModel } from './modules/users/users.model';
 import { ImagesModule } from './modules/images/images.module';
 import { ImagesModel } from './modules/images/images.model';
 import { AuthModule } from './modules/auth/auth.module';
+import { EmotionsModule } from './modules/emotions/emotions.module';
 
 @Module({
     imports: [
@@ -34,6 +35,7 @@ import { AuthModule } from './modules/auth/auth.module';
         UsersModule,
         ImagesModule,
         AuthModule,
+        EmotionsModule,
     ],
 })
 export class AppModule {}
