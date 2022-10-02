@@ -23,7 +23,7 @@ export class EmotionStateModel extends Model<EmotionStateModel, CreationAttrs> {
     angry: number;
 
     @Column({ type: DataType.INTEGER, defaultValue: 0 })
-    disgust: number;
+    neutral: number;
 
     @Column({ type: DataType.INTEGER, defaultValue: 0 })
     fear: number;

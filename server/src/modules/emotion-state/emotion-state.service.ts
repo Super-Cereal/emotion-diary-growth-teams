@@ -1,4 +1,4 @@
-import { Injectable, Scope, Inject, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, Scope } from '@nestjs/common';
 import { SaveEmotionStateDto } from './dto/save-emotion-state.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { EmotionStateModel } from './emotion-state.model';
@@ -17,7 +17,27 @@ export class EmotionStateService {
 
     async getEmotions() {
         // @ts-ignore
-        return this.usersService.getUserEmotions(this.req.user.name);
+        const userEmotions = await this.usersService.getUserEmotions(this.req.user.name)
+
+        const response = {
+            angry: 0,
+            fear:0,
+            happy:0,
+            neutral: 0,
+            sad: 0,
+            surprise: 0,
+        }
+
+        userEmotions.forEach((userEmotion) => {
+           response.angry += userEmotion.angry;
+           response.fear += userEmotion.fear;
+           response.happy += userEmotion.happy;
+           response.neutral += userEmotion.neutral;
+           response.sad += userEmotion.sad;
+           response.surprise += userEmotion.surprise;
+        });
+
+        return response;
     }
 
     async saveEmotionState(dto: SaveEmotionStateDto) {
