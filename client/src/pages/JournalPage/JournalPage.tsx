@@ -259,11 +259,7 @@ export const JournalPage = () => {
             ) : (
                 <></>
             )}
-<<<<<<< Updated upstream
             <AboutEmotionSection type={AboutEmotionSectionType.ANGRY} />
-        </div>
-=======
         </section>
->>>>>>> Stashed changes
     );
 };
