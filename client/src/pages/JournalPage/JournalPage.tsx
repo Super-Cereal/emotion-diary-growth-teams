@@ -1,6 +1,6 @@
 import b_ from 'b_';
 import * as faceapi from 'face-api.js';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { emotionsStore } from '../../api';
 import { postEmotions } from '../../store/emotions';
 
@@ -18,15 +18,8 @@ export const JournalPage = () => {
     const [captureVideo, setCaptureVideo] = React.useState(false);
     const [values, setValues] = React.useState<
         emotionsStore & { fearful: number }
-    >({
-        angry: 0,
-        fear: 0,
-        happy: 0,
-        neutral: 0,
-        sad: 0,
-        fearful: 0,
-        surprise: 0,
-    });
+        //@ts-ignore
+    >({});
 
     const videoRef = React.useRef();
     const videoHeight = 480;
@@ -48,49 +41,14 @@ export const JournalPage = () => {
         loadModels();
     }, []);
 
-    const closeWebcam = () => {
-        //@ts-ignore
-        videoRef.current.pause();
-        //@ts-ignore
-
-        videoRef.current.srcObject.getTracks()[0].stop();
-        setCaptureVideo(false);
-
-        postEmotions(values);
-    };
-
-    const startVideo = () => {
-        setCaptureVideo(true);
-        navigator.mediaDevices
-            .getUserMedia({ video: { width: 300 } })
-            .then((stream) => {
-                let video = videoRef.current;
-                //@ts-ignore
-                video.srcObject = stream;
-                //@ts-ignore
-
-                video.play();
-            })
-            .catch((err) => {
-                console.error('error:', err);
-            });
-
-        setTimeout(() => {
-            closeWebcam();
-        }, 3000);
-    };
-
     const handleVideoOnPlay = () => {
-        setInterval(async () => {
+        const id = setInterval(async () => {
             if (canvasRef && canvasRef.current) {
-                //@ts-ignore
                 const result = await faceapi.createCanvasFromMedia(
                     //@ts-ignore
 
                     videoRef.current,
                 );
-
-                console.log(result);
 
                 //@ts-ignore
                 canvasRef.current.innerHTML = result;
@@ -182,8 +140,50 @@ export const JournalPage = () => {
                         canvasRef.current,
                         resizedDetections,
                     );
+            } else {
+                clearInterval(id);
             }
         }, 1000);
+    };
+
+    const closeWebcam = () => {
+        //@ts-ignore
+        videoRef.current.pause();
+        //@ts-ignore
+
+        videoRef.current.srcObject.getTracks()[0].stop();
+        setCaptureVideo(false);
+    };
+
+    const startVideo = () => {
+        setValues({
+            angry: 0,
+            fear: 0,
+            happy: 0,
+            neutral: 0,
+            sad: 0,
+            fearful: 0,
+            surprise: 0,
+        });
+
+        setCaptureVideo(true);
+        navigator.mediaDevices
+            .getUserMedia({ video: { width: 300 } })
+            .then((stream) => {
+                let video = videoRef.current;
+                //@ts-ignore
+                video.srcObject = stream;
+                //@ts-ignore
+
+                video.play();
+            })
+            .catch((err) => {
+                console.error('error:', err);
+            });
+
+        setTimeout(() => {
+            closeWebcam();
+        }, 6000);
     };
 
     return (
@@ -192,40 +192,8 @@ export const JournalPage = () => {
             className={b()}
         >
             <div>
+                <h1 className={b('h1')}>Запечатлите свою эмоцию</h1>
                 {captureVideo && modelsLoaded ? (
-                    <div
-                        style={{
-                            background: `url(${button}) center center/cover no-repeat`,
-                        }}
-                    ></div>
-                ) : (
-                    <>
-                        <h1 className={b('h1')}>Запечатлите свою эмоцию</h1>
-                        <div className={b('wrapper')}>
-                            <div
-                                style={{
-                                    background: `url(${button}) center center/cover no-repeat`,
-                                    height: '500px',
-                                }}
-                            ></div>
-                            <div
-                                style={{
-                                    background: `url(${buttonCr}) center center/cover no-repeat`,
-                                }}
-                                onClick={startVideo}
-                                className={b('btn')}
-                            ></div>
-                        </div>
-                        <h3 className={b('h3')}>
-                            Мы определим ее и покажем по ней статистику, а также
-                            поможем детально узнать себя, свои эмоции и научим
-                            управлять ими
-                        </h3>
-                    </>
-                )}
-            </div>
-            {captureVideo ? (
-                modelsLoaded ? (
                     <div>
                         <div
                             style={{
@@ -252,11 +220,27 @@ export const JournalPage = () => {
                         </div>
                     </div>
                 ) : (
-                    <div>loading...</div>
-                )
-            ) : (
-                <></>
-            )}
+                    <div className={b('wrapper')}>
+                        <div
+                            style={{
+                                background: `url(${button}) center center/cover no-repeat`,
+                                height: '500px',
+                            }}
+                        ></div>
+                        <div
+                            style={{
+                                background: `url(${buttonCr}) center center/cover no-repeat`,
+                            }}
+                            onClick={startVideo}
+                            className={b('btn')}
+                        ></div>
+                    </div>
+                )}
+                <h3 className={b('h3')}>
+                    Мы определим ее и покажем по ней статистику, а также поможем
+                    детально узнать себя, свои эмоции и научим управлять ими
+                </h3>
+            </div>
             <AboutEmotionSection type={AboutEmotionSectionType.ANGRY} />
         </section>
     );
